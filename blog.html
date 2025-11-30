@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - JOF VidaTecnológica</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary: #FF6C0C;
+            --secondary: #132440;
+            --accent: #16476A;
+            --light: #3B9797;
+        }
+        
+        .bg-primary { background-color: var(--primary) !important; }
+        .bg-secondary { background-color: var(--secondary) !important; }
+        .bg-accent { background-color: var(--accent) !important; }
+        .bg-light-color { background-color: var(--light) !important; }
+        
+        .text-primary { color: var(--primary) !important; }
+        .text-secondary { color: var(--secondary) !important; }
+        .text-accent { color: var(--accent) !important; }
+        .text-light-color { color: var(--light) !important; }
+        
+        .btn-primary { 
+            background-color: var(--primary) !important; 
+            border-color: var(--primary) !important;
+        }
+        
+        .btn-primary:hover {
+            background-color: #e55c00 !important;
+            border-color: #e55c00 !important;
+            transform: translateY(-2px);
+        }
+        
+        /* Layout del Blog */
+        .blog-container {
+            padding: 4rem 0;
+            background: #f8f9fa;
+        }
+        
+        .blog-main {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            padding: 2rem;
+        }
+        
+        .blog-sidebar {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            padding: 2rem;
+            position: sticky;
+            top: 100px;
+        }
+        
+        /* Cards de Posts */
+        .post-card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+        
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .post-image {
+            height: 240px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .post-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .post-card:hover .post-image img {
+            transform: scale(1.05);
+        }
+        
+        .post-category {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+        
+        .post-content {
+            padding: 1.8rem;
+        }
+        
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .post-meta i {
+            color: var(--primary);
+        }
+        
+        .post-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+        
+        .post-excerpt {
+            color: #6c757d;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+        
+        .read-more {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .read-more:hover {
+            color: var(--accent);
+            gap: 0.7rem;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar-section {
+            margin-bottom: 2.5rem;
+        }
+        
+        .sidebar-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--primary);
+            display: inline-block;
+        }
+        
+        .popular-post {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        .popular-post:hover {
+            transform: translateX(5px);
+        }
+        
+        .popular-post:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .popular-post-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        
+        .popular-post-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .popular-post-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+        
+        .popular-post-meta {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        
+        .categories-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .categories-list li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .categories-list a {
+            color: var(--secondary);
+            text-decoration: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        .categories-list a:hover {
+            color: var(--primary);
+            padding-left: 0.5rem;
+        }
+        
+        .categories-list span {
+            background: var(--light);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+        
+        .tags-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .tag {
+            background: #f8f9fa;
+            color: var(--secondary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+        
+        .tag:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* Newsletter */
+        .newsletter-form {
+            background: linear-gradient(135deg, var(--light), var(--accent));
+            padding: 2rem;
+            border-radius: 12px;
+            color: white;
+        }
+        
+        .newsletter-form h4 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .newsletter-form .form-control {
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Pagination */
+        .pagination {
+            justify-content: center;
+            margin-top: 3rem;
+        }
+        
+        .page-link {
+            color: var(--secondary);
+            border: 1px solid #dee2e6;
+            padding: 0.75rem 1rem;
+            margin: 0 0.2rem;
+            border-radius: 8px;
+        }
+        
+        .page-link:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .page-item.active .page-link {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        /* Author Info */
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .author-details h5 {
+            margin: 0;
+            font-size: 1rem;
+            color: var(--secondary);
+        }
+        
+        .author-details p {
+            margin: 0;
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .blog-main, .blog-sidebar {
+                padding: 1.5rem;
+            }
+            
+            .post-card {
+                margin-bottom: 1.5rem;
+            }
+            
+            .post-image {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-secondary sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="logo-icon" style="width: 35px; height: 35px; background-color: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                        JOF
+                    </div>
+                    <div>
+                        <div style="font-weight: 700; font-size: 1.3rem; color: white;">VidaTecnológica</div>
+                        <div style="font-size: 0.6rem; color: rgba(255, 255, 255, 0.8); letter-spacing: 1px;">EDUCACIÓN DIGITAL</div>
+                    </div>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-house"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="bi bi-journal-text"></i> Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-signpost-split"></i> Guía de Aprendizaje</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-diagram-3"></i> Proyectos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-people"></i> Comunidad</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Blog Content -->
+    <section class="blog-container">
+        <div class="container">
+            <div class="row">
+                <!-- Main Content -->
+                <div class="col-lg-8 mb-4">
+                    <div class="blog-main">
+                        <h2 class="mb-4 text-secondary" id="posts">Posts Recientes</h2>
+                        
+                        <!-- Post 1 -->
+                        <div class="post-card">
+                            <div class="post-image">
+                                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Desarrollador programando">
+                                <div class="post-category">Productividad</div>
+                            </div>
+                            <div class="post-content">
+                                <div class="post-meta">
+                                    <span><i class="bi bi-calendar"></i> 15 Nov, 2023</span>
+                                    <span><i class="bi bi-clock"></i> 8 min lectura</span>
+                                    <span><i class="bi bi-chat"></i> 24 comentarios</span>
+                                </div>
+                                <h3 class="post-title">Cómo Mantener la Productividad sin Quemarte Programando</h3>
+                                <p class="post-excerpt">Descubre estrategias prácticas para mantener tu productividad mientras programas sin caer en el agotamiento. Aprende técnicas de gestión del tiempo, descansos efectivos y hábitos saludables que te ayudarán a mantener el ritmo sin sacrificar tu bienestar.</p>
+                                <a href="#" class="read-more">
+                                    Leer más <i class="bi bi-arrow-right"></i>
+                                </a>
+                                <div class="author-info">
+                                    <div class="author-avatar">
+                                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Autor">
+                                    </div>
+                                    <div class="author-details">
+                                        <h5>Carlos Rodríguez</h5>
+                                        <p>Senior Developer & Coach</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Post 2 -->
+                        <div class="post-card">
+                            <div class="post-image">
+                                <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Logo de React">
+                                <div class="post-category">React</div>
+                            </div>
+                            <div class="post-content">
+                                <div class="post-meta">
+                                    <span><i class="bi bi-calendar"></i> 12 Nov, 2023</span>
+                                    <span><i class="bi bi-clock"></i> 6 min lectura</span>
+                                    <span><i class="bi bi-chat"></i> 18 comentarios</span>
+                                </div>
+                                <h3 class="post-title">Meditación para Desarrolladores: Mejora tu Concentración con React</h3>
+                                <p class="post-excerpt">Técnicas de mindfulness específicamente diseñadas para desarrolladores que trabajan con React. Aprende a mantener el focus durante largas sesiones de coding y descubre cómo la meditación puede mejorar tu capacidad para resolver problemas complejos.</p>
+                                <a href="#" class="read-more">
+                                    Leer más <i class="bi bi-arrow-right"></i>
+                                </a>
+                                <div class="author-info">
+                                    <div class="author-avatar">
+                                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Autora">
+                                    </div>
+                                    <div class="author-details">
+                                        <h5>María López</h5>
+                                        <p>Frontend Developer & Yoga Instructor</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Post 3 -->
+                        <div class="post-card">
+                            <div class="post-image">
+                                <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80" alt="Persona desconectando dispositivos digitales">
+                                <div class="post-category">Vida Digital</div>
+                            </div>
+                            <div class="post-content">
+                                <div class="post-meta">
+                                    <span><i class="bi bi-calendar"></i> 8 Nov, 2023</span>
+                                    <span><i class="bi bi-clock"></i> 10 min lectura</span>
+                                    <span><i class="bi bi-chat"></i> 32 comentarios</span>
+                                </div>
+                                <h3 class="post-title">Desconectar para Conectar Mejor: El Arte del Descanso Digital</h3>
+                                <p class="post-excerpt">La importancia de los descansos digitales para mantener la creatividad y evitar el agotamiento mental. Estrategias comprobadas para desconectar efectivamente y recargar tu energía creativa. Aprende a establecer límites saludables con la tecnología.</p>
+                                <a href="#" class="read-more">
+                                    Leer más <i class="bi bi-arrow-right"></i>
+                                </a>
+                                <div class="author-info">
+                                    <div class="author-avatar">
+                                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Autor">
+                                    </div>
+                                    <div class="author-details">
+                                        <h5>Alex Fernández</h5>
+                                        <p>Digital Wellness Coach</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Post 4 -->
+                        <div class="post-card">
+                            <div class="post-image">
+                                <img src="https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Servidores y backend">
+                                <div class="post-category">Node.js</div>
+                            </div>
+                            <div class="post-content">
+                                <div class="post-meta">
+                                    <span><i class="bi bi-calendar"></i> 5 Nov, 2023</span>
+                                    <span><i class="bi bi-clock"></i> 7 min lectura</span>
+                                    <span><i class="bi bi-chat"></i> 15 comentarios</span>
+                                </div>
+                                <h3 class="post-title">Desarrollo Backend Saludable: Evita el Burnout con Node.js</h3>
+                                <p class="post-excerpt">Consejos prácticos para mantener un desarrollo backend sostenible mientras trabajas con Node.js. Desde gestión de APIs hasta prácticas de código saludable, descubre cómo construir sistemas robustos sin sacrificar tu bienestar mental y físico.</p>
+                                <a href="#" class="read-more">
+                                    Leer más <i class="bi bi-arrow-right"></i>
+                                </a>
+                                <div class="author-info">
+                                    <div class="author-avatar">
+                                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Autor">
+                                    </div>
+                                    <div class="author-details">
+                                        <h5>David Chen</h5>
+                                        <p>Backend Architect</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Siguiente</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <div class="blog-sidebar">
+                        <!-- Posts Populares -->
+                        <div class="sidebar-section" id="popular">
+                            <h3 class="sidebar-title">Posts Populares</h3>
+                            
+                            <div class="popular-post">
+                                <div class="popular-post-image">
+                                    <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="React">
+                                </div>
+                                <div class="popular-post-content">
+                                    <h4>10 Patrones de React que Debes Conocer</h4>
+                                    <div class="popular-post-meta">
+                                        <span>245 vistas</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="popular-post">
+                                <div class="popular-post-image">
+                                    <img src="https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="JavaScript">
+                                </div>
+                                <div class="popular-post-content">
+                                    <h4>JavaScript Moderno: ES6+ en la Práctica</h4>
+                                    <div class="popular-post-meta">
+                                        <span>189 vistas</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="popular-post">
+                                <div class="popular-post-image">
+                                    <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80" alt="Vida Digital">
+                                </div>
+                                <div class="popular-post-content">
+                                    <h4>Cómo Mantener el Equilibrio Vida-Trabajo en Tech</h4>
+                                    <div class="popular-post-meta">
+                                        <span>167 vistas</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="popular-post">
+                                <div class="popular-post-image">
+                                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Node.js">
+                                </div>
+                                <div class="popular-post-content">
+                                    <h4>Arquitectura de APIs con Node.js y Express</h4>
+                                    <div class="popular-popular-post-meta">
+                                        <span>154 vistas</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Categorías -->
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Categorías</h3>
+                            <ul class="categories-list">
+                                <li>
+                                    <a href="#">
+                                        JavaScript <span>12</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        React <span>8</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        Node.js <span>6</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        Vida Digital <span>15</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        Productividad <span>9</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        Herramientas <span>7</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Tags -->
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Tags Populares</h3>
+                            <div class="tags-cloud">
+                                <a href="#" class="tag">#JavaScript</a>
+                                <a href="#" class="tag">#React</a>
+                                <a href="#" class="tag">#NodeJS</a>
+                                <a href="#" class="tag">#Productividad</a>
+                                <a href="#" class="tag">#Bienestar</a>
+                                <a href="#" class="tag">#Frontend</a>
+                                <a href="#" class="tag">#Backend</a>
+                                <a href="#" class="tag">#VidaDigital</a>
+                                <a href="#" class="tag">#Coding</a>
+                                <a href="#" class="tag">#Desarrollo</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Newsletter -->
+                        <div class="sidebar-section">
+                            <div class="newsletter-form">
+                                <h4>📧 Suscríbete al Blog</h4>
+                                <p class="small mb-3">Recibe los últimos artículos sobre tecnología y bienestar digital directamente en tu email.</p>
+                                <form>
+                                    <input type="email" class="form-control" placeholder="Tu email" required>
+                                    <button type="submit" class="btn btn-primary w-100">Suscribirme</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-secondary text-white py-5 mt-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <div class="logo-icon" style="width: 40px; height: 40px; background-color: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                            JOF
+                        </div>
+                        <div>
+                            <div style="font-weight: 700; font-size: 1.4rem; color: white;">VidaTecnológica</div>
+                            <div style="font-size: 0.7rem; color: rgba(255, 255, 255, 0.8); letter-spacing: 1px;">EDUCACIÓN DIGITAL</div>
+                        </div>
+                    </div>
+                    <p class="text-light">Transformando vidas through la educación tecnológica con propósito y bienestar digital.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-white"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-github"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-youtube"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-discord"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h4 class="text-primary mb-3">Enlaces Rápidos</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Home</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Blog</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Guía de Aprendizaje</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Proyectos</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Comunidad</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="text-primary mb-3">Categorías Populares</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">JavaScript</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">React</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Node.js</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Vida Digital</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Productividad</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="text-primary mb-3">Contacto</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="bi bi-envelope me-2"></i> hola@vidatecnologica.com</li>
+                        <li class="mb-2"><i class="bi bi-telephone me-2"></i> +1 (555) 123-4567</li>
+                        <li><i class="bi bi-geo-alt me-2"></i> Barcelona, España</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center text-light">
+                <p class="mb-0">&copy; 2023 JOF VidaTecnológica. Todos los derechos reservados. | Tecnología con Corazón</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
